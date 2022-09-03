@@ -1,0 +1,124 @@
+﻿@model RateYourMusicApp.ViewModels.AlbumSearchVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Albums</h1>
+<form asp-controller="Albums" asp-action="Index" method="get">
+<p>
+Name: <input type="text" asp-for="SearchStringName" />
+Artist: <input type="text" asp-for="SearchStringArtist" />
+<select asp-for="SongZanr" asp-items="Model.Zanr">
+<option value="">All</option>
+</select>
+<input type="submit" value="Filter" />
+</p>
+</form>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+@if (User.Identity.IsAuthenticated && User.IsInRole("Guest"))
+{
+    <div class="container">
+
+        @foreach (var item in Model.Albums)
+        {
+            <div class="d-flex justify-content-md-center align-items-md-center mx-1 my-3  ">
+                <div> 
+                    <a asp-controller="Songs" asp-action="SongsByAlbum" asp-route-id="@item.Id">
+                        <img src="~/profilePictures/@item.profilePicture"
+                     class="img-thumbnail"
+                     height="380" width="300"
+                     asp-append-version="true" />
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration:none; color:inherit">
+                        <div  style="max-width: 300px;  border-top-width: 2px; border-bottom-width:0px; border-left-width:0px; border-right-width:0px; border-style: groove; border-radius:5px;">
+                            <p class="text-center">
+                                @Html.DisplayFor(modelItem => item.Name) &#40;@Html.DisplayFor(modelItem => item.YearAlbum)&#41; - @Html.DisplayFor(modelItem => item.Artist.FullName)
+                            </p>
+                            <p class="text-muted text-center">
+                                @Html.DisplayFor(modelItem => item.ProductionCompany)
+                            </p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        }
+
+    </div>
+}
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin")){
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Albums[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Albums[0].Artist)
+            </th>
+            <th>
+               Year
+            </th>
+            <th>
+                Genre
+            </th>
+            <th>
+                Label
+            </th>
+            <th>
+                Songs
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Albums) {
+        <tr>
+            <td>
+                <img src="~/profilePictures/@item.profilePicture"
+                     class="img-thumbnail"
+                     height="280" width="200"
+                     asp-append-version="true" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearAlbum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenreAlbum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionCompany)
+            </td>
+             <td>
+                 <a asp-controller="Songs" asp-action="SongsByAlbum" asp-route-id="@item.Id">View Songs</a>
+            </td>
+            <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}

@@ -1,0 +1,72 @@
+﻿@model RateYourMusicApp.ViewModels.AlbumPictureVM
+
+@{
+    ViewData["Title"] = "Edit Picture";
+}
+
+<h1>Edit Album</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPicture" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Album.Id" />
+            <div class="form-group" style="display:none">
+                <label asp-for="Album.Id" class="control-label"></label>
+                <input asp-for="Album.Id" class="form-control" />
+                <span asp-validation-for="Album.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Album.Name" class="control-label"></label>
+                <input asp-for="Album.Name" class="form-control" />
+                <span asp-validation-for="Album.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Album.Artist.FullName" class="control-label"></label>
+                <input asp-for="Album.Artist.FullName" class="form-control" />
+                <span asp-validation-for="Album.Artist.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none"
+                <label asp-for="Album.GenreAlbum" class="control-label"></label>
+                <input asp-for="Album.GenreAlbum" class="form-control" />
+                <span asp-validation-for="Album.GenreAlbum" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Album.YearAlbum" class="control-label"></label>
+                <input asp-for="Album.YearAlbum" class="form-control" />
+                <span asp-validation-for="Album.YearAlbum" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Album.ProductionCompany" class="control-label"></label>
+                <input asp-for="Album.ProductionCompany" class="form-control" />
+                <span asp-validation-for="Album.ProductionCompany" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group" style="display:none">
+                <label asp-for="Album.profilePicture" class="control-label"></label>
+                <input asp-for="AlbumPictureName" class="form-control" readonly="@(true)">
+                <span asp-validation-for="Album.profilePicture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlbumPictureFile" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="AlbumPictureFile" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile"></label>
+                </div>
+                <span asp-validation-for="AlbumPictureFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details">Back to Details</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

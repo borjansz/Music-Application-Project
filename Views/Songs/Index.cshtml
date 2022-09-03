@@ -1,0 +1,143 @@
+﻿@model RateYourMusicApp.ViewModels.SongSearchVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Songs</h1>
+<form asp-controller="Songs" asp-action="Index" method="get">
+<p>
+Name: <input type="text" asp-for="SearchStringName" />
+Album: <input type="text" asp-for="SearchStringAlbum" />
+<select asp-for="SongZanr" asp-items="Model.Zanr">
+<option value="">All</option>
+</select>
+<input type="submit" value="Filter" />
+</p>
+</form>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Guest"))
+{
+    <div class="container">
+
+        @foreach (var item in Model.Songs)
+        {
+
+            <div class="d-inline-flex justify-content-md-center align-items-md-center mx-1 my-3  ">
+                <div> 
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <img src="~/profilePictures/@item.profilePicture"
+                     class="img-thumbnail"
+                     height="380" width="290"
+                     asp-append-version="true" />
+                    </a>
+
+                    <div  style="max-width: 290px;  border-top-width: 2px; border-bottom-width:0px; border-left-width:0px; border-right-width:0px; border-style: groove; border-radius:5px;">
+                        <p>
+                            @Html.DisplayFor(modelItem => item.Name) &#40;@Html.DisplayFor(modelItem => item.YearSong)&#41; <a href="https://www.youtube.com/watch?v=zSWNWWREtsI"> <button type="button" class="btn btn-outline-danger"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16">
+  <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+</svg> YouTube </button> </a>
+                            @foreach (var artist in item.Artists)
+                            {
+                                <p> 
+                                    <a asp-controller="Artists" asp-action="Details" asp-route-id="@artist.ArtistId" style="text-decoration:none; color:inherit"> @artist.Artist.FullName </a> <br/>
+                                </p>
+                            }
+                        </p>
+                        <p class="text-muted">
+                            @Html.DisplayFor(modelItem => item.ProductionCompany)
+                        </p>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin")){
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs[0].Album)
+            </th>
+            <th>
+                Genre
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Label
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.Songs[0].Artists)
+</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Songs) {
+        <tr>
+              <td>
+                <img src="~/profilePictures/@item.profilePicture"
+                     class="img-thumbnail"
+                     height="280" width="200"
+                     asp-append-version="true" />
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Album.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenreSong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearSong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionCompany)
+            </td>
+            <td>
+              
+@foreach (var artist in item.Artists)
+{
+<a asp-controller="Artists" asp-action="Details" asp-route-id="@artist.ArtistId"> @artist.Artist.FullName </a> <br/>
+}
+</td>
+            <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    
+                    }
+                |<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}

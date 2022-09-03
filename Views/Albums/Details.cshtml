@@ -1,0 +1,60 @@
+﻿@model RateYourMusicApp.ViewModels.AlbumPictureVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Album</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+           Album picture:
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="~/profilePictures/@Model.Album.profilePicture"
+                class="img-thumbnail"
+                height="200" width="200"
+                asp-append-version="true" />
+        </dd> 
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Album.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Album.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Album.Artist)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Album.Artist.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+            Year
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Album.YearAlbum)
+        </dd>
+        <dt class = "col-sm-2">
+            Genre
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Album.GenreAlbum)
+        </dd>
+        <dt class = "col-sm-2">
+            Label
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Album.ProductionCompany)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Album.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) {
+     <a asp-action="EditPicture" asp-route-id="@Model?.Album.Id">Edit picture</a>
+    }
+</div>

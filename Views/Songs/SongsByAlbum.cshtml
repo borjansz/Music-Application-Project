@@ -1,0 +1,75 @@
+﻿@model RateYourMusicApp.ViewModels.SongSearchVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>@ViewBag.Message</h1>
+<form asp-controller="Songs" asp-action="SongsByAlbum" method="get">
+<p>
+Name: <input type="text" asp-for="SearchStringName" />
+Album: <input type="text" asp-for="SearchStringAlbum" />
+<select asp-for="SongZanr" asp-items="Model.Zanr">
+<option value="">All</option>
+</select>
+<input type="submit" value="Filter" />
+</p>
+</form>
+
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs[0].Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Songs[0].Album)
+            </th>
+            <th>
+                Genre
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Label
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Songs) {
+        <tr>
+            <td>
+                <a asp-controller="Songs" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Album.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenreSong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearSong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionCompany)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

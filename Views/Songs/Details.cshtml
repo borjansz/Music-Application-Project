@@ -1,0 +1,74 @@
+﻿@model RateYourMusicApp.ViewModels.SongPictureVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Song</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+           Song picture:
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="~/profilePictures/@Model.Song.profilePicture"
+                class="img-thumbnail"
+                height="200" width="200"
+                asp-append-version="true" />
+        </dd> 
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Song.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Song.Name)
+        </dd>
+       
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Song.Album)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Song.Album.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Genre
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Song.GenreSong)
+        </dd>
+        <dt class = "col-sm-2">
+            Year
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Song.YearSong)
+        </dd>
+        <dt class = "col-sm-2">
+            Label
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Song.ProductionCompany)
+        </dd>
+           <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Song.Artists)
+            </dt>
+        <dd class="col-sm-10">
+        @foreach (var artist in Model.Song.Artists)
+        {
+            <a asp-controller="Artists" asp-action="Details" asp-route-id="@artist.ArtistId">
+            @artist.Artist.FullName </a> <br />
+}
+        </dd>
+
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Song.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-action="EditPicture" asp-route-id="@Model?.Song.Id">Edit picture</a>
+    }
+</div>
